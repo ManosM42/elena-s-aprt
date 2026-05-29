@@ -14,10 +14,11 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AreaRouteImport } from './routes/area'
 import { Route as ApartmentRouteImport } from './routes/apartment'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AreaRestaurantsRouteImport } from './routes/area.restaurants'
-import { Route as AreaEntertainmentRouteImport } from './routes/area.entertainment'
-import { Route as AreaBeachesRouteImport } from './routes/area.beaches'
-import { Route as AreaAttractionsRouteImport } from './routes/area.attractions'
+import { Route as PlaceIdRouteImport } from './routes/place.$id'
+import { Route as AreaRestaurantsRouteImport } from './routes/area/restaurants'
+import { Route as AreaEntertainmentRouteImport } from './routes/area/entertainment'
+import { Route as AreaBeachesRouteImport } from './routes/area/beaches'
+import { Route as AreaAttractionsRouteImport } from './routes/area/attractions'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -42,6 +43,11 @@ const ApartmentRoute = ApartmentRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaceIdRoute = PlaceIdRouteImport.update({
+  id: '/place/$id',
+  path: '/place/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AreaRestaurantsRoute = AreaRestaurantsRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/area/beaches': typeof AreaBeachesRoute
   '/area/entertainment': typeof AreaEntertainmentRoute
   '/area/restaurants': typeof AreaRestaurantsRoute
+  '/place/$id': typeof PlaceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/area/beaches': typeof AreaBeachesRoute
   '/area/entertainment': typeof AreaEntertainmentRoute
   '/area/restaurants': typeof AreaRestaurantsRoute
+  '/place/$id': typeof PlaceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/area/beaches': typeof AreaBeachesRoute
   '/area/entertainment': typeof AreaEntertainmentRoute
   '/area/restaurants': typeof AreaRestaurantsRoute
+  '/place/$id': typeof PlaceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/area/beaches'
     | '/area/entertainment'
     | '/area/restaurants'
+    | '/place/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/area/beaches'
     | '/area/entertainment'
     | '/area/restaurants'
+    | '/place/$id'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/area/beaches'
     | '/area/entertainment'
     | '/area/restaurants'
+    | '/place/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   AreaRoute: typeof AreaRouteWithChildren
   ContactRoute: typeof ContactRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  PlaceIdRoute: typeof PlaceIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/place/$id': {
+      id: '/place/$id'
+      path: '/place/$id'
+      fullPath: '/place/$id'
+      preLoaderRoute: typeof PlaceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/area/restaurants': {
@@ -233,6 +253,7 @@ const rootRouteChildren: RootRouteChildren = {
   AreaRoute: AreaRouteWithChildren,
   ContactRoute: ContactRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  PlaceIdRoute: PlaceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
